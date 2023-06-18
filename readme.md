@@ -2,6 +2,8 @@
 
 Simple bash / node script to extract  [Goojara](https://goojara.ch) / [Wootly](https://go.wootly.ch) video urls. Handles the random advert redirects and just returns the video url.
 
+![Terminal Shot](./screenshots/shot-1.png)
+
 ### Installation
 
 ```bash
