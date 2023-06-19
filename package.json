@@ -1,10 +1,13 @@
 {
   "name": "goojara",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple bash / node script to extract Goojara / Wootly video urls. Handles the random advert redirects and just returns the video url.",
   "main": "index.js",
   "scripts": {
     "start": "echo \"View readme file\""
+  },
+  "engines": {
+    "node": "18.x"
   },
   "dependencies": {
     "dotenv": "^16.0.3",

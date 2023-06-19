@@ -6,6 +6,12 @@ Simple bash / node script to extract  [Goojara](https://goojara.ch) / [Wootly](h
 
 ### Installation
 
+1.
+```bash
+git clone https://github.com/richard-muvirimi/goojara-wootly-url-extractor
+```
+
+2.
 ```bash
 yarn install
 ```

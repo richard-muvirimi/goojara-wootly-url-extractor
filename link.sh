@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-node index.js "$1" | tail -n 1
+node ./index.js "$1" | tail -n 1
