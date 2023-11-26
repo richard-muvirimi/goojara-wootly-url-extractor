@@ -1,72 +1,103 @@
+const {program, Option} = require('commander');
 const puppeteer = require('puppeteer');
 const Duration = require('luxon').Duration;
 const path = require('node:path');
-require('dotenv').config();
+const log4js = require("log4js");
 
-setImmediate(async () => {
+program
+    .name('expose')
+    .description('CLI to expose download links from Goojara and Wootly')
+    .version('1.0.0');
 
-    const [, , target] = process.argv;
+program.command('expose')
+    .description('Expose download links from Goojara and Wootly')
+    .argument('<target>', 'The site link to expose download link from')
+    .addOption(
+        new Option('-v, --verbose-level <verbosity>', 'Print verbose logs')
+            .default("info")
+            .choices(['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'mark'])
+    )
+    .action(async (target, options) => {
 
-    let downloadUrl = "";
+        log4js.configure({
+            appenders: {
+                console: {
+                    type: "console",
+                },
+            },
+            categories: {
+                default: {appenders: ["console"], level: options.verboseLevel || "info"}
+            },
+        });
 
-    const browser = await puppeteer.launch({headless: "new"});
+        const logger = log4js.getLogger("expose");
 
-    try {
+        // Start extraction
+        let downloadUrl = "";
 
-        const page = await browser.newPage();
+        const browser = await puppeteer.launch({headless: "new"});
 
-        await page.goto(target, {timeout: Duration.fromObject({minutes: 5}).toMillis()});
+        try {
 
-        console.log("Navigated to: " + target)
+            const page = await browser.newPage();
 
-        const ur = new URL(target)
+            await page.goto(target, {timeout: Duration.fromObject({minutes: 5}).toMillis()});
 
-        if (ur.origin.includes("goojara")) {
+            logger.debug("Navigated to: " + target)
 
-            console.log("Goojara detected, taking appropriate measures.")
+            const ur = new URL(target)
 
-            const title1 = await page.title()
+            if (ur.origin.includes("goojara")) {
 
-            console.log("Goojara Title: " + title1.replace(/watch\s*/i, ""))
+                logger.trace("Goojara detected, taking appropriate measures.")
 
-            await page.click("#drl a:first-of-type")
+                const title1 = await page.title()
 
-            console.log("Navigated to wootly")
+                logger.info("Goojara Title: " + title1.replace(/watch\s*/i, ""))
 
+                await page.click("#drl a:first-of-type")
+
+                logger.trace("Navigated to wootly")
+
+            }
+
+            logger.debug("waiting for play button")
+
+            let handle = await page.waitForSelector("#container iframe", {timeout: Duration.fromObject({minutes: 5}).toMillis()});
+
+            const iframe = await handle.contentFrame()
+
+            const btn = await iframe.waitForSelector(".vid-holder .playh", {timeout: Duration.fromObject({minutes: 5}).toMillis()});
+
+            await btn.click(".vid-holder .playh");
+
+            logger.debug("play clicked")
+
+            await iframe.waitForNavigation({timeout: Duration.fromObject({minutes: 10}).toMillis()});
+
+            logger.debug("Navigated to video")
+
+            const title2 = await page.title()
+
+            logger.info("Wootly Title: " + path.basename(title2, path.extname(title2)))
+
+            await iframe.waitForSelector("#dld a[href^='https://go.wootly.ch/dash']", {timeout: Duration.fromObject({minutes: 10}).toMillis()});
+
+            logger.debug("waiting for download button")
+
+            downloadUrl = await iframe.evaluate("document.querySelector(\"#dld a[href^='https://go.wootly.ch/dash']\").href")
+
+        } catch (e) {
+            logger.error(e)
+        } finally {
+            await browser.close();
         }
 
-        console.log("waiting for play button")
+        if (options.linkOnly) {
+            console.clear()
+        }
 
-        let handle = await page.waitForSelector("#container iframe", {timeout: Duration.fromObject({minutes: 5}).toMillis()});
+        logger.mark("Link: " + downloadUrl);
+    });
 
-        const iframe = await handle.contentFrame()
-
-        const btn = await iframe.waitForSelector(".vid-holder .playh", {timeout: Duration.fromObject({minutes: 5}).toMillis()});
-
-        await btn.click(".vid-holder .playh");
-
-        console.log("play clicked")
-
-        await iframe.waitForNavigation({timeout: Duration.fromObject({minutes: 10}).toMillis()});
-
-        console.log("Navigated to video")
-
-        const title2 = await page.title()
-
-        console.log("Wootly Title: " + path.basename(title2, path.extname(title2)))
-
-        await iframe.waitForSelector("#dld a[href^='https://go.wootly.ch/dash']", {timeout: Duration.fromObject({minutes: 10}).toMillis()});
-
-        console.log("waiting for download button")
-
-        downloadUrl = await iframe.evaluate("document.querySelector(\"#dld a[href^='https://go.wootly.ch/dash']\").href")
-
-    } catch (e) {
-        console.error(e)
-    } finally {
-        await browser.close();
-    }
-
-    console.log(downloadUrl);
-
-});
+program.parse();

@@ -15,19 +15,50 @@ git clone https://github.com/richard-muvirimi/goojara-wootly-url-extractor
 ```bash
 yarn install
 ```
+or
+```bash
+npm install
+```
 
 ### Usage
 
-On linux shells
+Depending on your environment run either of the following commands.
+
+linux shells
 ```bash
 sh ./link.sh "video-page-url"
 > https://go.wootly.ch/dash...
 ```
 
-Using node.js directly
+Windows Terminal
 ```bash
-node index.js "video-page-url"
+./link.bat "video-page-url"
 > https://go.wootly.ch/dash...
+```
+
+Node.js Directly
+```bash
+node index.js expose "video-page-url"
+> https://go.wootly.ch/dash...
+```
+
+### Help
+
+To view additional options provided by the script run either of the following commands depending on environment.
+
+Node.js Directly
+```bash
+node index.js --help
+```
+
+Linux Shells
+```bash
+sh ./link.sh --help
+```
+
+Windows Terminal
+```bash
+./link.bat --help
 ```
 
 ### License
@@ -39,7 +70,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
