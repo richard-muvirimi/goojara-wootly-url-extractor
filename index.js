@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const Duration = require('luxon').Duration;
+const path = require('node:path');
 require('dotenv').config();
 
 setImmediate(async () => {
@@ -24,6 +25,10 @@ setImmediate(async () => {
 
             console.log("Goojara detected, taking appropriate measures.")
 
+            const title1 = await page.title()
+
+            console.log("Goojara Title: " + title1.replace(/watch\s*/i, ""))
+
             await page.click("#drl a:first-of-type")
 
             console.log("Navigated to wootly")
@@ -45,6 +50,10 @@ setImmediate(async () => {
         await iframe.waitForNavigation({timeout: Duration.fromObject({minutes: 10}).toMillis()});
 
         console.log("Navigated to video")
+
+        const title2 = await page.title()
+
+        console.log("Wootly Title: " + path.basename(title2, path.extname(title2)))
 
         await iframe.waitForSelector("#dld a[href^='https://go.wootly.ch/dash']", {timeout: Duration.fromObject({minutes: 10}).toMillis()});
 
