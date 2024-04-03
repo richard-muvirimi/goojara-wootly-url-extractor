@@ -7,40 +7,88 @@ Simple bash / node script to extract  [Goojara](https://goojara.ch) / [Wootly](h
 ### Installation
 
 1.
-```bash
-git clone https://github.com/richard-muvirimi/goojara-wootly-url-extractor
-```
+    ```bash
+    git clone https://github.com/richard-muvirimi/goojara-wootly-url-extractor
+    ```
 
 2.
-```bash
-yarn install
-```
-or
-```bash
-npm install
-```
+    ```bash
+    yarn install
+    ```
+    or
+    ```bash
+    npm install
+    ```
 
 ### Usage
 
 Depending on your environment run either of the following commands.
 
-linux shells
+*unix shells (bash, zsh, etc)
 ```bash
 sh ./link.sh "video-page-url"
-> https://go.wootly.ch/dash...
+> Goojara Title: Movie Title (1970)
+> Wootly Title: Movie.Title.1970
+> LINK: https://go.wootly.ch/dash...
 ```
 
 Windows Terminal
 ```bash
 ./link.bat "video-page-url"
-> https://go.wootly.ch/dash...
+> Goojara Title: Movie Title (1970)
+> Wootly Title: Movie.Title.1970
+> LINK: https://go.wootly.ch/dash...
 ```
 
 Node.js Directly
 ```bash
 node index.js expose "video-page-url"
-> https://go.wootly.ch/dash...
+> Goojara Title: Movie Title (1970)
+> Wootly Title: Movie.Title.1970
+> LINK: https://go.wootly.ch/dash...
 ```
+
+Exported Command (if you exported the script to your path)
+```bash
+goojara "video-page-url"
+> Goojara Title: Movie Title (1970)
+> Wootly Title: Movie.Title.1970
+> LINK: https://go.wootly.ch/dash...
+```
+
+#### Alternatively you can export the script to your path and use it as a command.
+
+###### Installation
+*unix shells (bash, zsh, etc.)
+```bash
+npm run path:linux
+````
+
+Windows Terminal
+```bash
+npm run path:windows
+```
+
+###### Uninstallation
+
+*unix shells (bash, zsh, etc.)
+```bash
+npm run unpath:linux
+```
+
+Windows Terminal
+```bash
+npm run unpath:windows
+```
+
+###### Usage
+
+*unix shells (bash, zsh, etc.) and Windows Terminal
+```bash
+goojara "video-page-url"
+```
+
+The script can be more verbose by setting the `--verbose` argument, see help below for usage.
 
 ### Help
 
@@ -51,7 +99,7 @@ Node.js Directly
 node index.js --help
 ```
 
-Linux Shells
+*unix shells (bash, zsh, etc.)
 ```bash
 sh ./link.sh --help
 ```
@@ -59,6 +107,11 @@ sh ./link.sh --help
 Windows Terminal
 ```bash
 ./link.bat --help
+```
+
+Exported Command (if you exported the script to your path)
+```bash
+goojara --help
 ```
 
 ### License
