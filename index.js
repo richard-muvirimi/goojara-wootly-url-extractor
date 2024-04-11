@@ -4,6 +4,8 @@ const Duration = require('luxon').Duration;
 const path = require('node:path');
 const log4js = require("log4js");
 
+let browser;
+
 program
     .name('expose')
     .description('CLI to expose download links from Goojara and Wootly')
@@ -35,7 +37,7 @@ program.command('expose')
         // Start extraction
         let downloadUrl = "";
 
-        const browser = await puppeteer.launch({headless: "new"});
+        browser = await puppeteer.launch({headless: "new"});
 
         try {
 
@@ -90,7 +92,7 @@ program.command('expose')
         } catch (e) {
             logger.error(e)
         } finally {
-            await browser.close();
+            await browser?.close();
         }
 
         if (options.linkOnly) {
@@ -101,3 +103,17 @@ program.command('expose')
     });
 
 program.parse();
+
+process.on("SIGINT", async () => {
+    await browser?.close();
+
+    process.exit();
+});
+
+process.on("uncaughtException", async (err) => {
+    await browser?.close();
+
+    console.error(err);
+
+    process.exit();
+});
