@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "echo \"View readme file\"",
-    "path:linux": "echo \"#!/usr/bin/env sh\n\nnode $(pwd)/index.js expose \"'$@' > ~/.local/bin/goojara && chmod +x ~/.local/bin/goojara",
+    "path:linux": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nnode $(pwd)/index.js expose \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
     "path:windows" : "echo \"node %cd%\\index.js expose %*\" > %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd",
     "unpath:linux": "rm ~/.local/bin/goojara",
     "unpath:windows": "rm %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=16.x"
   },
   "dependencies": {
     "commander": "^11.1.0",
