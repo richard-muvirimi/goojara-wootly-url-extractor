@@ -5,19 +5,24 @@
   "main": "index.js",
   "scripts": {
     "start": "echo \"View readme file\"",
-    "path:linux": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nnode $(pwd)/index.js expose \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
-    "path:windows" : "echo \"node %cd%\\index.js expose %*\" > %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd",
+    "path:linux": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nbash $(pwd)/link.sh \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
+    "path:windows": "echo \"node %cd%\\link.bat %*\" > %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd",
+    "path:docker": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nbash $(pwd)/link.docker.sh \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
     "unpath:linux": "rm ~/.local/bin/goojara",
-    "unpath:windows": "rm %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd"
+    "unpath:windows": "rm %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd",
+    "check-version": "node scripts/check-version.js",
+    "prepare": "husky install",
+    "postinstall": "husky install"
   },
   "engines": {
     "node": ">=16.x"
   },
   "dependencies": {
     "commander": "^11.1.0",
+    "husky": "^9.1.7",
     "log4js": "^6.9.1",
     "luxon": "^3.4.4",
-    "puppeteer": "^19.3.0"
+    "puppeteer-core": "^23.11.1"
   },
   "author": "Richard Muvirimi <richard@tyganeutronics.com>",
   "license": "ISC"

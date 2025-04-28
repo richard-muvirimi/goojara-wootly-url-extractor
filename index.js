@@ -1,5 +1,5 @@
 const {program, Option} = require('commander');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const Duration = require('luxon').Duration;
 const path = require('node:path');
 const log4js = require("log4js");
@@ -37,13 +37,15 @@ program.command('expose')
         // Start extraction
         let downloadUrl = "";
 
-        browser = await puppeteer.launch({headless: "new"});
+        browser = await puppeteer.launch({headless: "new", channel : "chrome"});
 
         try {
 
             const page = await browser.newPage();
 
             await page.goto(target, {timeout: Duration.fromObject({minutes: 5}).toMillis()});
+
+            await page.waitForNetworkIdle({concurrency : 1});
 
             logger.debug("Navigated to: " + target)
 
@@ -52,6 +54,8 @@ program.command('expose')
             if (ur.origin.includes("goojara")) {
 
                 logger.trace("Goojara detected, taking appropriate measures.")
+
+                await page.waitForSelector("#drl")
 
                 const title1 = await page.title()
 
@@ -83,11 +87,11 @@ program.command('expose')
 
             logger.info("Wootly Title: " + path.basename(title2, path.extname(title2)))
 
-            await iframe.waitForSelector("#dld a[href^='https://go.wootly.ch/dash']", {timeout: Duration.fromObject({minutes: 10}).toMillis()});
+            await iframe.waitForSelector("#dld a[href^='https://']", {timeout: Duration.fromObject({minutes: 10}).toMillis()});
 
             logger.debug("waiting for download button")
 
-            downloadUrl = await iframe.evaluate("document.querySelector(\"#dld a[href^='https://go.wootly.ch/dash']\").href")
+            downloadUrl = await iframe.evaluate("document.querySelector(\"#dld a[href^='https://']\").href")
 
         } catch (e) {
             logger.error(e)
