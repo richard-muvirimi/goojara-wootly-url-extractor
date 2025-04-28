@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "echo \"View readme file\"",
+    "format": "prettier --write index.js",
+    "format:check": "prettier --check index.js",
     "path:linux": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nbash $(pwd)/link.sh \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
     "path:windows": "echo \"node %cd%\\link.bat %*\" > %USERPROFILE%\\AppData\\Roaming\\npm\\goojara.cmd",
     "path:docker": "mkdir -p ~/.local/bin; echo \"#!/usr/bin/env sh\n\nbash $(pwd)/link.docker.sh \"'$@' | tee ~/.local/bin/goojara; chmod +x ~/.local/bin/goojara",
@@ -25,5 +27,8 @@
     "puppeteer-core": "^23.11.1"
   },
   "author": "Richard Muvirimi <richard@tyganeutronics.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
 }
