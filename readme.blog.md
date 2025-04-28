@@ -19,7 +19,7 @@ The Goojara-Wootly URL Extractor is a command-line utility that:
 
 All of this happens within seconds, saving you from endless clicks and potential malicious ads.
 
-![Terminal Screenshot](https://github.com/richard-muvirimi/goojara-wootly-url-extractor/screenshots/shot-1.png)
+![Terminal Screenshot](https://raw.githubusercontent.com/richard-muvirimi/goojara-wootly-url-extractor/release/screenshots/shot-1.png)
 
 ## Getting Started
 
