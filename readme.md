@@ -1,6 +1,6 @@
 # Video Url Extractor
 
-Simple bash / node script to extract  [Goojara](https://goojara.ch) / [Wootly](https://go.wootly.ch) video urls. Handles the random advert redirects and just returns the video url.
+Simple bash / node script to extract [Goojara](https://goojara.ch) / [Wootly](https://go.wootly.ch) video urls. Handles the random advert redirects and just returns the video url.
 
 ![Terminal Shot](./screenshots/shot-1.png)
 
@@ -40,6 +40,14 @@ Windows Terminal
 > LINK: https://go.wootly.ch/dash...
 ```
 
+Docker
+```bash
+docker run ghcr.io/richard-muvirimi/goojara-wootly-url-extractor:release expose "video-page-url"
+> Goojara Title: Movie Title (1970)
+> Wootly Title: Movie.Title.1970
+> LINK: https://go.wootly.ch/dash...
+```
+
 Node.js Directly
 ```bash
 node index.js expose "video-page-url"
@@ -69,6 +77,11 @@ Windows Terminal
 npm run path:windows
 ```
 
+Docker
+```bash
+npm run path:docker
+```
+
 ###### Uninstallation
 
 *unix shells (bash, zsh, etc.)
@@ -83,12 +96,29 @@ npm run unpath:windows
 
 ###### Usage
 
-*unix shells (bash, zsh, etc.) and Windows Terminal
+*unix shells (bash, zsh, etc.), Windows Terminal, and Docker
 ```bash
 goojara "video-page-url"
 ```
 
 The script can be more verbose by setting the `--verbose` argument, see help below for usage.
+
+### Docker Support
+
+This project includes full Docker support. For detailed instructions on building, running, and deploying with Docker, please see [README.Docker.md](./README.Docker.md).
+
+Quick Docker examples:
+
+Build and run locally:
+```bash
+docker build -t goojara-url-extractor .
+docker run goojara-url-extractor expose "video-page-url"
+```
+
+Use pre-built image:
+```bash
+docker run ghcr.io/richard-muvirimi/goojara-wootly-url-extractor:release expose "video-page-url"
+```
 
 ### Help
 
@@ -109,10 +139,20 @@ Windows Terminal
 ./link.bat --help
 ```
 
+Docker
+```bash
+docker run ghcr.io/richard-muvirimi/goojara-wootly-url-extractor:release --help
+```
+
 Exported Command (if you exported the script to your path)
 ```bash
 goojara --help
 ```
+
+### System Requirements
+
+- Node.js >= 16.x
+- Google Chrome (required for Puppeteer)
 
 ### License
 
